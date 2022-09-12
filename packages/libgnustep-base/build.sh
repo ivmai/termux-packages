@@ -51,6 +51,14 @@ termux_step_pre_configure() {
 		EOF
 		chmod 0700 "$wrapper"
 	done
+	# Dummy CPP
+	cat > "$bin/$TERMUX_HOST_PLATFORM-cpp" <<-EOF
+		#!${sh}
+		unset LD_PRELOAD
+		unset LD_LIBRARY_PATH
+		exec /usr/bin/cpp "\$@"
+	EOF
+	chmod 0700 "$bin/$TERMUX_HOST_PLATFORM-cpp"
 	for p in gnustep; do
 		local conf="$bin/${p}-config"
 		cat > "$conf" <<-EOF
